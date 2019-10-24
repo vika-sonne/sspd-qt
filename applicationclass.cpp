@@ -267,6 +267,7 @@ void ApplicationClass::timerEvent(QTimerEvent *event)
 			_findAttemptsCount++;
 		else if(_findAttemptsCount == COM_PORT_FIND_START_ATTEMPTS)
 		{
+			_findAttemptsCount++;
 			killTimer(_findTimerId);
 			_findTimerId = startTimer(COM_PORT_FIND_INTERVAL);
 		}
