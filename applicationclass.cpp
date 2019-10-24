@@ -7,7 +7,9 @@
 #include <QStringRef>
 #include "applicationclass.h"
 
-static constexpr int COM_PORT_FIND_INTERVAL = 500; //!< ms
+static constexpr int COM_PORT_FIND_START_INTERVAL = 25; //!< Find inverval for low reconnect delay, ms
+static constexpr int COM_PORT_FIND_START_ATTEMPTS = 15; //!< Attempts count for low reconnect delay
+static constexpr int COM_PORT_FIND_INTERVAL = 330; //!< ms
 
 static QString _escapeToCpp(QByteArray buff)
 {
@@ -148,7 +150,7 @@ ApplicationClass::ApplicationClass(int &argc, char **argv) :
 	QCoreApplication(argc, argv)
 {
 	QCoreApplication::setApplicationName("sspd");
-	QCoreApplication::setApplicationVersion("0.1");
+	QCoreApplication::setApplicationVersion("0.2");
 
 	QCommandLineParser parser;
 	parser.setApplicationDescription("Simple serial port dump (qt)");
@@ -250,10 +252,23 @@ void ApplicationClass::timerEvent(QTimerEvent *event)
 	auto portAndVidPid = tryFindComPort();
 	if(!portAndVidPid.first.isEmpty())
 	{
+		// com port found
 		if(openSerialPort(portAndVidPid))
 		{
 			killTimer(_findTimerId);
 			_findTimerId = -1;
+			_findAttemptsCount = 0;
+		}
+	}
+	else
+	{
+		// com port not found
+		if(_findAttemptsCount < COM_PORT_FIND_START_ATTEMPTS)
+			_findAttemptsCount++;
+		else if(_findAttemptsCount == COM_PORT_FIND_START_ATTEMPTS)
+		{
+			killTimer(_findTimerId);
+			_findTimerId = startTimer(COM_PORT_FIND_INTERVAL);
 		}
 	}
 }
@@ -325,8 +340,10 @@ void ApplicationClass::closeSerialPort()
 	_serialPort = nullptr;
 	emit serialPortClosed(portName);
 	// starts to search port in the system by timer
-	if(_findTimerId < 0)
-		_findTimerId = startTimer(COM_PORT_FIND_INTERVAL);
+	if(_findTimerId >= 0)
+		killTimer(_findTimerId);
+	_findAttemptsCount = 0;
+	_findTimerId = startTimer(COM_PORT_FIND_START_INTERVAL);
 }
 
 void ApplicationClass::_serialPort_readyRead()

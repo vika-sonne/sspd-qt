@@ -49,7 +49,8 @@ protected:
 	Mode _mode = Mode::LINES;
 	QByteArray _line;
 
-	int _findTimerId; //!< Com port find interval timer
+	int _findTimerId = -1; //!< Com port find interval timer id: -1 - no timer; 0.. timer id
+	int _findAttemptsCount = 0; //!< Com port find attempts count: 0..
 
 	void timerEvent(QTimerEvent *event);
 
