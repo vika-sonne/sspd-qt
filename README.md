@@ -9,7 +9,7 @@ Utility that helps capturing the log especially from serial ports (USART, e.t.c.
 * support for Linux & Windows.
 
 Developed as primary logs grabber tool for electronic device developers.
-There is python utilities for the same purpose: [PyQt pqcom](/vika-sonne/pqcom/README.md) & [python sspd](/vika-sonne/electronix-python/README.md#SSPD).
+There is python utilities for the same purpose: [PyQt pqcom](https://github.com/vika-sonne/pqcom/) & [python sspd](https://github.com/vika-sonne/electronix-python/blob/master/README.md#SSPD).
 
 ##### Usage:
 ```sh
