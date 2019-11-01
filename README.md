@@ -1,9 +1,13 @@
-# SSPD
+SSPD
+====
+
+[![GitHub release](https://img.shields.io/github/release/vika-sonne/sspd-qt.svg)](https://github.com/vika-sonne/sspd-qt/releases/latest)&nbsp;&nbsp;&nbsp;&nbsp;![](https://img.shields.io/badge/platform-linux--64%20|%20win--64-success)
+
 **Simple serial port dump.**
 
 Utility that helps capturing the log especially from serial ports (USART, e.t.c.) and includes features:
 * precise timestamps;
-* C-style escape for bytes dump;
+* C-style escaped string for bytes dump;
 * port autoreconnect;
 * USB port search by VID:PID;
 * support for Linux & Windows.
@@ -11,16 +15,28 @@ Utility that helps capturing the log especially from serial ports (USART, e.t.c.
 Developed as primary logs grabber tool for electronic device developers.
 There is python utilities for the same purpose: [PyQt pqcom](https://github.com/vika-sonne/pqcom/) & [python sspd](https://github.com/vika-sonne/electronix-python/blob/master/README.md#SSPD).
 
-##### Usage:
+## Download last release
+
+![](https://img.shields.io/badge/-Linux-red)
+[&nbsp;&nbsp;&nbsp;ELF for Qt5 (Kubuntu 18)&nbsp;&nbsp;&nbsp;](https://github.com/vika-sonne/sspd-qt/releases/latest/download/sspd)
+
+![](https://img.shields.io/badge/-Windows-informational)
+[&nbsp;&nbsp;&nbsp;Windows x64 standalone executable&nbsp;&nbsp;&nbsp;](https://github.com/vika-sonne/sspd-qt/releases/latest/download/sspd.exe)
+
+## Usage:
+
 ```sh
 Usage: ./sspd [options]
-Simple serial port dump (qt)
+
+Simple serial port dump (Qt).
+Dumps com port incoming data as C-style escaped string and optionally as HEX.
 
 Options:
   -h, --help     Displays this help.
   -v, --version  Displays version information.
-  -l             List available serial ports
+  -l             Lists available serial ports
   -t             Dump bytes instead of lines
+  -x             Dump in HEX format
   -p <PORT>      Port name
   -b <BAUD>      Port baudrate
   -m <DPS>       Port parameters: Data bits 5..8; Parity NEOSM; Stop bits 1,
@@ -49,21 +65,41 @@ sspd -p ttyACM0 | tee ~/1.log
 sspd -p ttyACM0 > ~/$(date +"%Y-%d-%m_%H-%M-%S").log
 ```
 
+* Lits of com ports allowable in the system:
+```sh
+sspd -l
+ttyUSB1
+        1a86:7523
+        USB2.0-Serial
+        1a86
+ttyUSB0
+        0403:6001
+        FT232R USB UART
+        FTDI
+ttyUSB2
+        1a86:7523
+        USB2.0-Serial
+        1a86
+ttyS0
+```
+
 ##### Log example:
 Log of AM2320 Digital Temperature and Humidity Sensor:
 ```sh
 sspd -u 1a86:7523 -b 2400
-START 2019-10-26T20:35:42
-20:35:46.479 <found ttyUSB0 USB 1a86:7523 open @ 2400 8N1>
-20:35:49.785 12 << RH=47.8   \n
-20:35:50.298 14 << \rT=+23.1   \n
-20:35:54.342 14 << \rRH=47.9   \n
-20:35:54.855 14 << \rT=+23.1   \n
-20:35:56.035 02 << \r
-20:35:56.035 <closed ttyUSB0>
-20:36:00.653 <found ttyUSB0 USB 1a86:7523 open @ 2400 8N1>
-20:36:03.952 12 << RH=47.5   \n
-20:36:04.465 14 << \rT=+23.1   \n
-20:36:08.509 14 << \rRH=47.7   \n
-20:36:09.022 14 << \rT=+23.1   \n
+START 2019-11-01T23:17:45
+23:17:47.982 <opened found ttyUSB0 USB 1a86:7523 @ 2400 8N1>
+23:17:51.337 11 << RH=47.8   \n
+23:17:51.850 12 << \rT=+11.0   \n
+23:17:55.894 12 << \rRH=48.0   \n
+23:17:56.407 12 << \rT=+11.0   \n
+23:17:56.884 01 << \r
+23:17:56.884 <closed ttyUSB0: (8) ...>
+23:18:01.708 <opened found ttyUSB0 USB 1a86:7523 @ 2400 8N1>
+23:18:05.053 11 << RH=47.7   \n
+23:18:05.566 12 << \rT=+11.0   \n
+23:18:09.610 12 << \rRH=47.9   \n
+23:18:10.123 12 << \rT=+11.1   \n
+23:18:10.773 01 << \r
+23:18:10.773 <closed ttyUSB0: (8) ...>
 ```
