@@ -18,9 +18,11 @@ There is python utilities for the same purpose: [PyQt pqcom](https://github.com/
 ## Download last release
 
 ![](https://img.shields.io/badge/-Linux-red)
+
 [&nbsp;&nbsp;&nbsp;ELF for Qt5 (Kubuntu 18)&nbsp;&nbsp;&nbsp;](https://github.com/vika-sonne/sspd-qt/releases/latest/download/sspd)
 
 ![](https://img.shields.io/badge/-Windows-informational)
+
 [&nbsp;&nbsp;&nbsp;Windows x64 standalone executable&nbsp;&nbsp;&nbsp;](https://github.com/vika-sonne/sspd-qt/releases/latest/download/sspd.exe)
 
 ## Usage:
