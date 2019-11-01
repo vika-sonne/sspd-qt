@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 	if(a.isArgsError)
 	{
 		std::cout << "Run to help: \"" << argv[0] << "\" -h" << std::endl;
-		return -1;
+		return EINVAL;
 	}
 
 	if (a.isExit)

@@ -14,8 +14,8 @@ public:
 	typedef std::pair<QString, QString> PortAndVidPid;
 	enum class Mode { LINES, BYTES };
 	explicit ApplicationClass(int &argc, char **argv);
-	bool isExit = false;
 	bool isArgsError = false;
+	bool isExit = false;
 
 public slots:
 	//! Opens com port
@@ -49,14 +49,22 @@ protected:
 	Mode _mode = Mode::LINES;
 	QByteArray _line;
 
-	int _findTimerId = -1; //!< Com port find interval timer id: -1 - no timer; 0.. timer id
-	int _findAttemptsCount = 0; //!< Com port find attempts count: 0..
+	bool _hexFormat = false;
+
+	int _reconnectTimerId = -1; //!< Com port find interval timer id: -1 - no timer; 0.. timer id
+	int _reconnectAttemptsCount = 0; //!< Com port find attempts count: 0..
+	QSerialPort::SerialPortError _lastError = QSerialPort::NoError; //! Error filter
+	bool _hasLastData = false; //! Open com port filter
 
 	void timerEvent(QTimerEvent *event);
 
-	//! Try to find com port in the system
+	void processReconnectTimer();
+
+	//! Tries to find not busy com port in the system
 	//! @return Com port path (if found) or empty string
 	PortAndVidPid tryFindComPort();
+
+	void logData(QByteArray data);
 };
 
 #endif // APPLICATIONCLASS_H
