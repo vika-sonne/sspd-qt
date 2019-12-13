@@ -17,17 +17,19 @@ static QString _toEscapedCString(QByteArray buff)
 	foreach(auto ch, buff) {
 		switch(ch)
 		{
-			case 0: ret += "\\0"; break;
-			case 7: ret += "\\a"; break;
-			case 8: ret += "\\b"; break;
-			case 9: ret += "\\t"; break;
-			case 0xa: ret += "\\n"; break;
-			case 0xb: ret += "\\v"; break;
-			case 0xc: ret += "\\f"; break;
-			case 0xd: ret += "\\r"; break;
+			case 0: ret += "\\0"; break; // NULL
+			case 7: ret += "\\a"; break; // Beep
+			case 8: ret += "\\b"; break; // Backspace
+			case 9: ret += "\\t"; break; // Horizontal tab
+			case 0xa: ret += "\\n"; break; // Line feed
+			case 0xb: ret += "\\v"; break; // Vertical tab
+			case 0xc: ret += "\\f"; break; // Form feed
+			case 0xd: ret += "\\r"; break; // Carriage return
+			case 0x5c: ret += "\\\\"; break;
 			default:
 				if(ch < 0x20 || (uint8_t)ch > 0x7E)
 				{
+					// hex escape
 					QByteArray a(&ch, 1);
 					ret += QString("\\x") + a.toHex().toUpper();
 				}
