@@ -152,7 +152,7 @@ ApplicationClass::ApplicationClass(int &argc, char **argv) :
 	QCoreApplication(argc, argv)
 {
 	QCoreApplication::setApplicationName("sspd");
-	QCoreApplication::setApplicationVersion("0.5");
+	QCoreApplication::setApplicationVersion("0.6");
 
 	QCommandLineParser parser;
 	parser.setApplicationDescription("\nSimple serial port dump (Qt)."
